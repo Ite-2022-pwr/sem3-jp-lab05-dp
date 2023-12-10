@@ -73,7 +73,7 @@ public class PainterJob implements Runnable {
                 }
                 sb.append("|");
             }
-            FXUtils.getMainController().setFenceLabel(sb.toString());
+//            FXUtils.getMainController().fireDataChange();
         }
     }
 }

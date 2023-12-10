@@ -8,5 +8,6 @@ module pl.pwr.ite.clientNew {
     exports pl.pwr.ite.clientNew;
     exports pl.pwr.ite.clientNew.view.controller;
     exports pl.pwr.ite.clientNew.model;
+    exports pl.pwr.ite.clientNew.view.model;
     opens pl.pwr.ite.clientNew.view.controller to javafx.fxml;
 }

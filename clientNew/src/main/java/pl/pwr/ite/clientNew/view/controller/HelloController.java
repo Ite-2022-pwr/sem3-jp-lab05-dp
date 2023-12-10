@@ -4,16 +4,22 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import pl.pwr.ite.clientNew.model.Painter;
 import pl.pwr.ite.clientNew.service.Repository;
 import pl.pwr.ite.clientNew.service.job.JobExecutor;
 import pl.pwr.ite.clientNew.service.job.PaintProviderJob;
 import pl.pwr.ite.clientNew.service.job.PainterJob;
+import pl.pwr.ite.clientNew.view.model.RailLabel;
+import pl.pwr.ite.clientNew.view.model.RailProgressBar;
+import pl.pwr.ite.clientNew.view.model.Updatable;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,12 +31,14 @@ public class HelloController implements Initializable {
     @FXML protected TableView<Painter> paintersTableView;
     @FXML protected Button startButton;
     @FXML protected Label fenceLabel;
+    @FXML protected GridPane fenceGridPane;
 
     @Override
     @FXML
     public void initialize(URL url, ResourceBundle resourceBundle) {
         paintersTableView.getColumns().clear();
         createPaintersTable();
+        init();
     }
 
     @FXML
@@ -43,15 +51,35 @@ public class HelloController implements Initializable {
         }
     }
 
-    public void setFenceLabel(String text) {
-        Platform.runLater(() -> {
-            fenceLabel.setText(text);
-        });
+    private void init() {
+        var segments = repository.getSegments();
+        synchronized (segments) {
+            int i = 0;
+            for(var segment : segments) {
+                for(var rail : segment.getRails()) {
+                    var bar = new RailProgressBar(rail);
+                    var label = new RailLabel(rail);
+                    fenceGridPane.add(bar, i, 0);
+                    fenceGridPane.add(label, i, 1);
+                    GridPane.setHalignment(label, HPos.CENTER);
+                    i++;
+                }
+                var pane = new Pane();
+                pane.setPrefWidth(10);
+                pane.setStyle("-fx-background-color: #000000");
+                fenceGridPane.add(pane, i, 0, 1, 2);
+                i++;
+            }
+        }
     }
 
     public void fireDataChange() {
         Platform.runLater(() -> {
-
+            for(var child : fenceGridPane.getChildren()) {
+                if(Updatable.class.isAssignableFrom(child.getClass())) {
+                    ((Updatable)child).update();
+                }
+            }
         });
     }
 
