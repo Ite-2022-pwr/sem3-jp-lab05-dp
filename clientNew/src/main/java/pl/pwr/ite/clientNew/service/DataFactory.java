@@ -1,5 +1,6 @@
 package pl.pwr.ite.clientNew.service;
 
+import javafx.scene.paint.Color;
 import pl.pwr.ite.clientNew.model.Painter;
 import pl.pwr.ite.clientNew.model.Rail;
 import pl.pwr.ite.clientNew.model.Segment;
@@ -20,6 +21,7 @@ public class DataFactory {
             var painter = new Painter();
             painter.setSpeed(PAINTER_BASE_SPEED + getRandom(1, 4) * 1000);
             painter.setId(UUID.randomUUID());
+            painter.setColor(Color.color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
             painter.setLetter((char) ((char) 65 + i));
             painters.add(painter);
         }

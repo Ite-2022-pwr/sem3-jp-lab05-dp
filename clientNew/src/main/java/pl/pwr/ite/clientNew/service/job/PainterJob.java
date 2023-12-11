@@ -41,9 +41,8 @@ public class PainterJob implements Runnable {
                         Thread.sleep(painter.getSpeed());
                     }
                     paintBucket.setUsages(paintBucket.getUsages() - 1);
-                    rail.setPaintedBy(painter.getLetter());
+                    rail.setPaintedBy(painter);
                     rail.setStatus(RailStatus.Finished);
-                    print();
                 }
             }
         } catch (InterruptedException ex) {
@@ -55,25 +54,10 @@ public class PainterJob implements Runnable {
         var rails = segment.getRails();
         for(int i = startIndex; i < rails.size(); i ++) {
             var rail = rails.get(i);
-            if(RailStatus.Unpainted.equals(rail.getStatus())) {
+            if(RailStatus.Unpainted.equals(rail.getStatus()) || RailStatus.Reserved.equals(rail.getStatus())) {
                 return rail;
             }
         }
         return null;
-    }
-
-    private void print() {
-        var segments = repository.getSegments();
-        synchronized (segments) {
-            var sb = new StringBuilder();
-            sb.append("|");
-            for(var segment : segments) {
-                for(var rail : segment.getRails()) {
-                    sb.append(rail.getStatus() == RailStatus.Finished ? rail.getPaintedBy() : "-");
-                }
-                sb.append("|");
-            }
-//            FXUtils.getMainController().fireDataChange();
-        }
     }
 }

@@ -1,5 +1,6 @@
 package pl.pwr.ite.clientNew.model;
 
+import javafx.scene.paint.Color;
 import lombok.Data;
 
 import java.util.UUID;
@@ -12,4 +13,6 @@ public class Painter {
     private Integer speed;
 
     private Character letter;
+
+    private Color color;
 }

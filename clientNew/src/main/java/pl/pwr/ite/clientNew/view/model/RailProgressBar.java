@@ -18,7 +18,7 @@ public class RailProgressBar extends ProgressBar implements Updatable {
         synchronized (rail) {
             setProgress(rail.getProgress());
             if(rail.getProgress() >= 1.0) {
-                getStyleClass().add("green-bar");
+                super.setStyle("-fx-accent: green");
             }
         }
     }

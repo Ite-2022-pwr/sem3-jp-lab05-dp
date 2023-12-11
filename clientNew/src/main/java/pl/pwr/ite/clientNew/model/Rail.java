@@ -14,5 +14,5 @@ public class Rail {
 
     private Double progress;
 
-    private Character paintedBy;
+    private Painter paintedBy;
 }

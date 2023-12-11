@@ -21,7 +21,7 @@ public class RailLabel extends Label implements Updatable {
     public void update() {
         synchronized (rail) {
             if(rail.getPaintedBy() != null) {
-                setText(rail.getPaintedBy().toString());
+                setText(rail.getPaintedBy().getLetter().toString());
             }
         }
     }

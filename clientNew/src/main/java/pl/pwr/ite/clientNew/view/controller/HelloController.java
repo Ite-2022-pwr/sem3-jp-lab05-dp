@@ -43,6 +43,7 @@ public class HelloController implements Initializable {
 
     @FXML
     protected void startButtonClick(ActionEvent e) {
+        startButton.setDisable(true);
         JobExecutor.execute(new PaintProviderJob());
         var painters = repository.getPainters();
         for(var painter : painters) {
@@ -84,7 +85,7 @@ public class HelloController implements Initializable {
     }
 
     private void createPaintersTable() {
-        var idColumn = new TableColumn<Painter, UUID>("ID");
+        var idColumn = new TableColumn<Painter, UUID>("Painter ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         var letterColumn = new TableColumn<Painter, UUID>("Letter");
         letterColumn.setCellValueFactory(new PropertyValueFactory<>("letter"));

@@ -23,7 +23,7 @@ public class Repository {
 
     public Repository() {
         segments.addAll(DataFactory.generateSegments(3));
-        painters.addAll(DataFactory.generatePainters(2));
+        painters.addAll(DataFactory.generatePainters(4));
     }
 
     public synchronized boolean isShouldProvideBucket() {
@@ -37,6 +37,7 @@ public class Repository {
             if(segment != null) {
                 segmentReference.setSegment(segment);
                 segmentReference.setStartingRailIndex(0);
+                segmentReference.getSegment().getRails().get(0).setStatus(RailStatus.Reserved);
                 return segmentReference;
             }
             for(var seg : segments) {
