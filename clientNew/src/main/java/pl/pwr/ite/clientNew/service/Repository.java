@@ -30,6 +30,15 @@ public class Repository {
         return shouldProvideBucket;
     }
 
+    public synchronized void setShouldProvideBucket() {
+        synchronized (segments) {
+            if(segments.stream().noneMatch(s -> s.getRails().stream().anyMatch(r -> !RailStatus.Finished.equals(r.getStatus())))) {
+                this.shouldProvideBucket = false;
+                FXUtils.getMainController().finishPainting();
+            }
+        }
+    }
+
     public SegmentReference findUnpaintedSegment() {
         synchronized (segments) {
             var segment = segments.stream().filter(s -> s.getRails().stream().allMatch(r -> RailStatus.Unpainted.equals(r.getStatus()))).findFirst().orElse(null);
@@ -45,7 +54,9 @@ public class Repository {
                 var unpainted = seg.getRails().stream().filter(s -> RailStatus.Unpainted.equals(s.getStatus())).count();
                 if(unpainted >= all / 2) {
                     segmentReference.setSegment(seg);
-                    segmentReference.setStartingRailIndex(all % 2 == 0 ? all / 2 : (int)Math.ceil((double) all / 2));
+                    var startIndex = all % 2 == 0 ? all / 2 : (int)Math.ceil((double) all / 2);
+                    segmentReference.getSegment().getRails().get(startIndex).setStatus(RailStatus.Reserved);
+                    segmentReference.setStartingRailIndex(startIndex);
                     return segmentReference;
                 }
             }
@@ -66,6 +77,9 @@ public class Repository {
                 return null;
             }
             var bucket = paintBuckets.get(0);
+            if(bucket.getUsages() == 0) {
+                return null;
+            }
             paintBuckets.remove(bucket);
             return bucket;
         }

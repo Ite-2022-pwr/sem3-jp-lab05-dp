@@ -34,6 +34,7 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
+            <Label fx:id="painBucketsLabel" text="Paint buckets in magazine: " />
          </children>
       </VBox>
    </center>

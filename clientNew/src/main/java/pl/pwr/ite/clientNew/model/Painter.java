@@ -15,4 +15,13 @@ public class Painter {
     private Character letter;
 
     private Color color;
+
+    private PaintBucket currentBucket;
+
+    public String getLeftBucket() {
+        if(currentBucket == null) {
+            return "0";
+        }
+        return currentBucket.getUsages().toString();
+    }
 }

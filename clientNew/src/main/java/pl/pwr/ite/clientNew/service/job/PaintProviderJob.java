@@ -17,18 +17,19 @@ public class PaintProviderJob implements Runnable {
 
     @Override
     public void run() {
-        var buckets = new ArrayList<PaintBucket>();
+
         try {
             while (repository.isShouldProvideBucket()) {
-                for(int i = 0; i < getRandom(2, 4); i++) {
+                var buckets = new ArrayList<PaintBucket>();
+                for(int i = 0; i < getRandom(2, 6); i++) {
                     var bucket = new PaintBucket();
                     bucket.setId(UUID.randomUUID());
                     bucket.setUsages(5);
                     buckets.add(bucket);
                 }
                 repository.addBuckets(buckets);
-                System.out.println("Provider added buckets to stock");
-                TimeUnit.SECONDS.sleep(getRandom(30, 30));
+                System.out.println("Added " + buckets.size() + " buckets");
+                TimeUnit.SECONDS.sleep(getRandom(15, 30));
             }
         } catch (InterruptedException ex) {
             System.out.println("Paint provider job interrupted.");

@@ -30,8 +30,8 @@ public class HelloController implements Initializable {
 
     @FXML protected TableView<Painter> paintersTableView;
     @FXML protected Button startButton;
-    @FXML protected Label fenceLabel;
     @FXML protected GridPane fenceGridPane;
+    @FXML protected Label painBucketsLabel;
 
     @Override
     @FXML
@@ -81,19 +81,38 @@ public class HelloController implements Initializable {
                     ((Updatable)child).update();
                 }
             }
+            var painters = repository.getPainters();
+            synchronized (painters) {
+                paintersTableView.getItems().clear();
+                for(var painter : painters) {
+                    paintersTableView.getItems().add(painter);
+                }
+            }
+            var painBuckets = repository.getPaintBuckets();
+            synchronized (painBuckets) {
+                painBucketsLabel.setText("Paint buckets in magazine: " + painBuckets.size());
+            }
         });
     }
+
+    public void finishPainting() {
+        fenceGridPane.setStyle("-fx-background-color: lightgreen");
+    }
+
 
     private void createPaintersTable() {
         var idColumn = new TableColumn<Painter, UUID>("Painter ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        var letterColumn = new TableColumn<Painter, UUID>("Letter");
+        var letterColumn = new TableColumn<Painter, String>("Letter");
         letterColumn.setCellValueFactory(new PropertyValueFactory<>("letter"));
-        var speedColumn = new TableColumn<Painter, UUID>("Speed");
+        var speedColumn = new TableColumn<Painter, String>("Speed");
         speedColumn.setCellValueFactory(new PropertyValueFactory<>("speed"));
+        var bucketColumn = new TableColumn<Painter, String>("Paints left");
+        bucketColumn.setCellValueFactory(new PropertyValueFactory<>("leftBucket"));
         paintersTableView.getColumns().add(idColumn);
         paintersTableView.getColumns().add(letterColumn);
         paintersTableView.getColumns().add(speedColumn);
+        paintersTableView.getColumns().add(bucketColumn);
 
         var painters = repository.getPainters();
         for(var painter : painters) {

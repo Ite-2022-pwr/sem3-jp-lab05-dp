@@ -13,13 +13,13 @@ import java.util.stream.IntStream;
 public class DataFactory {
 
     private static final Random random = new Random();
-    private static final Integer PAINTER_BASE_SPEED = 1 * 1000;
+    private static final Integer PAINTER_BASE_SPEED = 1 * 100;
 
     public static List<Painter> generatePainters(int limit) {
         var painters = new ArrayList<Painter>();
         for(int i = 0; i < limit; i++) {
             var painter = new Painter();
-            painter.setSpeed(PAINTER_BASE_SPEED + getRandom(1, 4) * 1000);
+            painter.setSpeed(PAINTER_BASE_SPEED + getRandom(1, 10) * 100);
             painter.setId(UUID.randomUUID());
             painter.setColor(Color.color(random.nextFloat(), random.nextFloat(), random.nextFloat()));
             painter.setLetter((char) ((char) 65 + i));
@@ -33,7 +33,7 @@ public class DataFactory {
         for(int i = 0; i < limit; i++) {
             var segment = new Segment();
             segment.setId(UUID.randomUUID());
-            for(int j = 0; j < 9; j++) {
+            for(int j = 0; j < 20; j++) {
                 segment.getRails().add(generateRail());
             }
             segments.add(segment);

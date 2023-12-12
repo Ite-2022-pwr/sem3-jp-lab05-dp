@@ -9,5 +9,5 @@ public class PaintBucket {
 
     private UUID id;
 
-    private Integer usages;
+    private volatile Integer usages;
 }
